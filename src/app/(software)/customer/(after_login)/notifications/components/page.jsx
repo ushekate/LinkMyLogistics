@@ -7,12 +7,13 @@ import {
   MessageCircleQuestion, FileText, RefreshCw, Clock, SquarePen,
   LucideMegaphone, Dot, CircleCheck,
 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default function NotificationsPage() {
   const [expanded, setExpanded] = useState(false);
 
   const notifications = [
-    // original 3
+    // Data
     {
       id: 0,
       type: 'event',
@@ -129,19 +130,19 @@ export default function NotificationsPage() {
                         key={i}
                         href={`/customer/notifications/components/${note.id}`}
                       >
-                        <button className="flex gap-2 text-sm px-3 py-1.5 rounded-md font-medium bg-gray-100 text-gray-800">
+                        <Button className="flex gap-2 text-sm px-3 py-1.5 rounded-md font-medium bg-gray-100 text-gray-800">
                           <FileText size={18} />
                           {action.label}
-                        </button>
+                        </Button>
                       </Link>
                     ) : (
-                      <button
+                      <Button
                         key={i}
                         className="flex gap-2 text-sm px-3 py-1.5 rounded-md font-medium bg-blue-600 text-white"
                       >
                         <SquarePen size={18} />
                         {action.label}
-                      </button>
+                      </Button>
                     )
                   )}
                 </div>
@@ -156,7 +157,7 @@ export default function NotificationsPage() {
 
       {/* Toggle Button */}
       <div className="text-center mt-6">
-        <button
+        <Button
           onClick={() => setExpanded(!expanded)}
           className="border bg-white border-primary text-primary px-4 py-2 rounded-md text-sm font-medium hover:bg-primary/90 hover:text-white transition"
         >
@@ -164,7 +165,7 @@ export default function NotificationsPage() {
             <RefreshCw size={18} />
             {expanded ? 'Show Less' : 'Load More Notifications'}
           </span>
-        </button>
+        </Button>
       </div>
     </div>
   );

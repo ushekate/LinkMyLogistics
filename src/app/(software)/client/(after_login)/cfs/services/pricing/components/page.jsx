@@ -18,6 +18,7 @@ import {
     ArrowLeftRight,
     Send
 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default function ViewPricingRequest() {
     const { requestId } = useParams();
@@ -118,9 +119,9 @@ export default function ViewPricingRequest() {
                     ))}
                 </div>
                 <div className="flex gap-3 flex-wrap">
-                    <button className="bg-secondary/30 p-2 rounded-md flex items-center gap-2"><Upload className="w-4 h-4" /> Upload ZIP</button>
-                    <button className="bg-secondary/30 p-2 rounded-md flex items-center gap-2"><Download className="w-4 h-4" /> Download All</button>
-                    <button className="bg-secondary/30 p-2 rounded-md flex items-center gap-2"><Scan className="w-4 h-4" /> View Fullscreen</button>
+                    <Button className="bg-secondary/30 p-2 rounded-md flex items-center gap-2"><Upload className="w-4 h-4" /> Upload ZIP</Button>
+                    <Button className="bg-secondary/30 p-2 rounded-md flex items-center gap-2"><Download className="w-4 h-4" /> Download All</Button>
+                    <Button className="bg-secondary/30 p-2 rounded-md flex items-center gap-2"><Scan className="w-4 h-4" /> View Fullscreen</Button>
                 </div>
             </div>
 
@@ -130,10 +131,10 @@ export default function ViewPricingRequest() {
                     <Wrench className="w-5 h-5 text-blue-600" /> CFS Tools
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <button className="bg-blue-100 text-blue-600 flex items-center justify-center py-4 rounded-md gap-2 hover:text-white hover:bg-blue-600"><Edit3 className="w-4 h-4" /> Edit Request</button>
-                    <button className="bg-purple-100 text-purple-600 flex items-center justify-center py-4 rounded-md gap-2 hover:text-white hover:bg-purple-600"><StickyNote className="w-4 h-4" /> Add Note</button>
-                    <button className="bg-green-100 text-green-600 flex items-center justify-center py-4 rounded-md gap-2 hover:text-white hover:bg-green-600"><ArrowLeftRight className="w-4 h-4" /> Change Status: Accepted</button>
-                    <button className="bg-yellow-100 text-yellow-600 flex items-center justify-center py-4 rounded-md gap-2 hover:text-white hover:bg-yellow-600"><Send className="w-4 h-4" /> Send Message to Customer</button>
+                    <Button className="h-15 bg-blue-100 text-blue-600 flex items-center justify-center py-4 rounded-md gap-2 hover:text-white hover:bg-blue-600"><Edit3 className="w-4 h-4" /> Edit Request</Button>
+                    <Button className="h-15 bg-purple-100 text-purple-600 flex items-center justify-center py-4 rounded-md gap-2 hover:text-white hover:bg-purple-600"><StickyNote className="w-4 h-4" /> Add Note</Button>
+                    <Button className="h-15 bg-green-100 text-green-600 flex items-center justify-center py-4 rounded-md gap-2 hover:text-white hover:bg-green-600"><ArrowLeftRight className="w-4 h-4" /> Change Status: Accepted</Button>
+                    <Button className="h-15 bg-yellow-100 text-yellow-600 flex items-center justify-center py-4 rounded-md gap-2 hover:text-white hover:bg-yellow-600"><Send className="w-4 h-4" /> Send Message to Customer</Button>
                 </div>
             </div>
         </div>
