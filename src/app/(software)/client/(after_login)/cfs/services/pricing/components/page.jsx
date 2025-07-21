@@ -19,6 +19,7 @@ import {
     Send
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default function ViewPricingRequest() {
     const { requestId } = useParams();
@@ -137,6 +138,13 @@ export default function ViewPricingRequest() {
                     <Button className="h-15 bg-yellow-100 text-yellow-600 flex items-center justify-center py-4 rounded-md gap-2 hover:text-white hover:bg-yellow-600"><Send className="w-4 h-4" /> Send Message to Customer</Button>
                 </div>
             </div>
+
+            <div>
+                <Link href={`/client/cfs/services/pricing/components/${requestId}`}>
+                    <Button className="text-white p-2 w-full rounded-md flex items-center gap-2"><Eye className="w-4 h-4" />View Details</Button>
+                </Link>
+            </div>
+
         </div>
     );
 }

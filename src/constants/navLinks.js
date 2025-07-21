@@ -33,6 +33,7 @@ export const navLinks = [
 			{ label: "Cheque Acceptance", href: '/customer/cfs/services/cheque', access: 'Customer', icon: CreditCard, },
 			{ label: "Tax Invoice", href: '/customer/cfs/services/tax-invoice', access: 'Customer', icon: Receipt, },
 			{ label: "Job Order Update", href: '/customer/cfs/services/job-order', access: 'Customer', icon: FileText, },
+			{ label: "Pricing", href: '/customer/cfs/services/pricing', access: 'Customer', icon: MapPinned, },
 		]
 	},
 	{ label: "Notifications & Updates", href: "/customer/notifications", access: 'Customer', icon: Bell },
@@ -68,7 +69,7 @@ export const navLinks = [
 			{ label: "Job Orders", href: '/client/cfs/services/job-order', access: 'Client', icon: FileText, },
 		]
 	},
-	{ label: "Notifications & Updates", href: "", access: 'Client', icon: Bell },
+	{ label: "Notifications & Updates", href: "/client/notifications", access: 'Client', icon: Bell },
 	{ label: "Profile & Support", href: "/client/profile", access: 'Client', icon: User },
 	{ label: "Orders", href: "/client/orders", access: 'Client', icon: Package },
 ]

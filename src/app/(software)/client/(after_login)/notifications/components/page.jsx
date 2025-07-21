@@ -104,7 +104,7 @@ export default function NotificationListPage() {
                     </p>
 
                     <div className="flex gap-2 mt-3">
-                      <Link href={`/customer/notifications/components/${note.id}`}>
+                      <Link href={`/client/notifications/components/${note.id}`}>
                         <Button className="flex gap-2 text-sm px-3 py-1.5 rounded-md font-medium bg-gray-100 text-gray-800">
                           <FileText size={18} />
                           View More Details
