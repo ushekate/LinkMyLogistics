@@ -7,19 +7,19 @@
   --secondary: #666A6D;
   --accent: #BAE6FD;
   --background-2: #16A34A1A;
-  --light-primary: #16A34A;
+  --light-primary: #31b8ed;
 }
 
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #D4E6D2;
-    --foreground: #3C4D03;
-    --primary: #2E6F40;
+    --background: #E5E7EB;
+    --foreground: #1546B2;
+    --primary: #1A70E2;
     --secondary: #666A6D;
-    --accent: #E8F3EB;
+    --accent: #BAE6FD;
     --background-2: #16A34A1A;
-    --light-primary: #16A34A;
+    --light-primary: #31b8ed;
   }
 }
 
@@ -39,3 +39,18 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+
+/* .otp-input {
+  width: 44px;
+  height: 52px;
+  text-align: center;
+  font-size: 1.5rem;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+  transition: border 0.2s ease;
+} */
+
+/* .otp-input:focus {
+  border-color: #4f46e5;
+} */

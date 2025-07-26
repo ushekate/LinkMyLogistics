@@ -1,150 +1,148 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import pbclient from '@/lib/db';
-import Link from 'next/link';
 import {
-  CalendarDays,
-  Download,
-  FileText,
-  Image as ImageIcon,
-  Video,
-  ArrowLeft,
-} from 'lucide-react';
+  Building, CheckCircle2, CircleUser, Download, File, FileDown, FileImage,
+  FileText, ImageIcon, Mail, MessageCircle, Package2, Pencil, Phone
+} from "lucide-react";
 
 export default function PricingPage() {
-  const params = useParams();
-  const id = params?.id;
-  const [request, setRequest] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { jobOrderId } = useParams();
+  const [requestData, setRequestData] = useState(null);
+  const [documents, setDocuments] = useState([]);
 
   useEffect(() => {
-    if (!id) return;
-
     const fetchData = async () => {
       try {
-        const record = await pbclient.collection('pricing_requests').getOne(id, {
-          expand: 'customer',
+        const record = await pbclient.collection('pricing_requests').getOne(jobOrderId);
+        const docs = await pbclient.collection('pricing_documents').getFullList({
+          filter: `request_id='${jobOrderId}'`
         });
-        setRequest(record);
+        setRequestData(record);
+        setDocuments(docs);
       } catch (error) {
-        console.error('Failed to fetch request:', error);
-      } finally {
-        setLoading(false);
+        console.error('Error fetching pricing request:', error);
       }
     };
 
-    fetchData();
-  }, [id]);
+    if (jobOrderId) fetchData();
+  }, [jobOrderId]);
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'Accepted':
-        return 'bg-green-100 text-green-700';
-      case 'Rejected':
-        return 'bg-red-100 text-red-700';
-      default:
-        return 'bg-yellow-100 text-yellow-700';
-    }
-  };
-
-  const renderDocuments = () => {
-    if (!request?.documents?.length) {
-      return <p className="text-gray-500">No documents</p>;
-    }
-
-    return (
-      <div className="grid gap-3 grid-cols-1 sm:grid-cols-2">
-        {request.documents.map((doc, index) => {
-          const ext = doc.split('.').pop().toLowerCase();
-          const fileUrl = `${pbclient.baseUrl}/api/files/pricing_requests/${request.id}/${doc}`;
-          const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext);
-          const isVideo = ['mp4', 'mov', 'webm'].includes(ext);
-
-          return (
-            <div key={index} className="border rounded-lg p-3 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                {isImage ? <ImageIcon /> : isVideo ? <Video /> : <FileText />}
-                <p className="text-sm truncate w-40">{doc}</p>
-              </div>
-              <a href={fileUrl} target="_blank" rel="noreferrer" download>
-                <Download className="w-4 h-4" />
-              </a>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-
-  if (loading) return <p className="p-6 text-gray-600">Loading...</p>;
-  if (!request) return <p className="p-6 text-red-500">Request not found.</p>;
+  // if (!requestData) return <div className="p-4">Loading...</div>;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <Link href="/customer/(after_login)/cfs/services/pricing" className="flex items-center text-sm text-blue-600 mb-4">
-        <ArrowLeft className="w-4 h-4 mr-2" />
-        Back to Pricing Requests
-      </Link>
+    <div className="p-4 space-y-6 min-h-screen">
+      {/* Header */}
+      <div className="py-2 border-b-4 border-secondary/30">
+        <h1 className="flex gap-2 font-semibold text-xl text-black">
+          <FileText size={24} className='mt-1' /> View Pricing Request - #{requestData?.req_id}
+        </h1>
+      </div>
 
-      <div className="bg-white rounded-xl shadow-md p-6 space-y-4">
-        <div className="flex justify-between items-start">
-          <div>
-            <h2 className="text-lg font-semibold">Request ID: {request.req_id}</h2>
-            <p className="text-sm text-gray-500">
-              {request.expand?.customer?.name || request.customer || 'Customer'}
-            </p>
-          </div>
-          <span className={`px-3 py-1 text-sm font-medium rounded-full ${getStatusColor(request.status)}`}>
-            {request.status}
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-          <div>
-            <p className="text-gray-500">Service Provider</p>
-            <p>{request.service_provider}</p>
-          </div>
-          <div>
-            <p className="text-gray-500">Preferable Rate</p>
-            <p>{request.preferable_rate}</p>
-          </div>
-          <div>
-            <p className="text-gray-500">DPD Type</p>
-            <p>{request.dpd_type}</p>
-          </div>
-          <div>
-            <p className="text-gray-500">Container Type</p>
-            <p>{request.container_type}</p>
-          </div>
-          <div>
-            <p className="text-gray-500">Containers per Month</p>
-            <p>{request.containers_per_month}</p>
-          </div>
-          <div>
-            <p className="text-gray-500">Request Date</p>
-            <p>
-              <CalendarDays className="inline w-4 h-4 mr-1" />
-              {new Date(request.request_date).toLocaleDateString('en-IN', {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric',
-              })}
-            </p>
-          </div>
-          <div className="sm:col-span-2">
-            <p className="text-gray-500">Notes</p>
-            <p>{request.notes || '—'}</p>
+      {/* Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Customer Profile */}
+        <div className="bg-white shadow-md rounded-md p-2 text-black">
+          <div className="p-4">
+            <h2 className="flex gap-2 text-xl font-semibold">
+              <CircleUser size={25} className='text-foreground' /> Customer Profile
+            </h2>
+            <div className="flex gap-4 items-center justify-between px-8 mt-4">
+              <div className="bg-secondary/20 p-2 rounded-full"><Building className="w-10 h-10" /></div>
+              <div className="border-b-4 border-secondary/30 pb-2">
+                <p className="font-medium text-md px-2">{requestData?.customer_name}</p>
+              </div>
+            </div>
+            <div className="mt-4 px-4">
+              <p className="text-sm grid grid-cols-2 gap-2 mb-2"><span>Contact Person:</span>{requestData?.contact_person}</p>
+              <p className="text-sm grid grid-cols-2 gap-2 mb-2"><span>Email:</span>{requestData?.email}</p>
+              <p className="text-sm grid grid-cols-2 gap-2 mb-2"><span>Location:</span>{requestData?.location}</p>
+              <p className="text-sm grid grid-cols-2 gap-2 mb-2"><span>Phone:</span>{requestData?.phone}</p>
+            </div>
           </div>
         </div>
 
-        <div>
-          <p className="text-gray-500 font-medium mb-2">Documents</p>
-          {renderDocuments()}
+        {/* Request Details */}
+        <div className="bg-white shadow-md rounded-md p-2 text-black">
+          <div className="p-4">
+            <h2 className="flex gap-2 text-xl font-semibold">
+              <Package2 size={25} className='text-foreground' /> Requested Details
+            </h2>
+          </div>
+          <div className="px-4">
+            <p className="text-sm grid grid-cols-2 gap-2 mb-2"><span>Service Provider:</span>{requestData?.service_provider}</p>
+            <p className="text-sm grid grid-cols-2 gap-2 mb-2"><span>Preferable Rate:</span>₹{requestData?.preferable_rate}</p>
+            <p className="text-sm grid grid-cols-2 gap-2 mb-2"><span>DPD / Non-DPD:</span>{requestData?.dpd_type}</p>
+            <p className="text-sm grid grid-cols-2 gap-2 mb-2"><span>Container Type:</span>{requestData?.container_type}</p>
+            <p className="text-sm grid grid-cols-2 gap-2 mb-2"><span>Containers per Month:</span>{requestData?.containers_per_month}</p>
+            <p className="text-sm grid grid-cols-2 gap-2 mb-2">
+              <span>Status:</span>
+              <span className="text-green-600 font-medium flex items-center gap-1">
+                <CheckCircle2 className="w-4 h-4" /> {requestData?.status}
+              </span>
+            </p>
+            <p className="text-sm grid grid-cols-2 gap-2 mb-2"><span>Request Date:</span>{requestData?.request_date}</p>
+            <p className="text-sm grid grid-cols-2 gap-2 mb-2"><span>Additional Notes:</span>{requestData?.notes || '--'}</p>
+          </div>
+        </div>
+
+        {/* Tools */}
+        <div className="bg-white shadow-md text-black rounded-md p-4 space-y-3">
+          <h2 className="text-lg font-semibold mb-2 flex items-center gap-2">
+            <FileText className="w-5 h-5 text-primary" /> Tools
+          </h2>
+          <button className="w-full flex items-center justify-between border rounded-md px-3 py-2 hover:bg-secondary/20">
+            <span>Edit Request</span>
+            <Pencil className="w-4 h-4" />
+          </button>
+          <div className="flex items-center justify-between border rounded-md px-3 py-2 bg-green-100 text-green-700">
+            <span>Status:</span>
+            <span className="font-semibold">{requestData?.status}</span>
+          </div>
+          <button className="w-full flex items-center justify-between bg-blue-600 text-white px-3 py-2 rounded-md">
+            <span>Support Chat</span>
+            <MessageCircle className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Documents */}
+      <div className="border border-secondary/30 rounded-lg p-4 shadow-md bg-white">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold flex items-center gap-2">
+            <FileText className="w-5 h-5 text-primary" /> Documents
+          </h2>
+          <button className="flex items-center gap-1 text-sm bg-gray-200 px-3 py-1 rounded-md hover:bg-gray-300">
+            <Download className="w-4 h-4" /> Download All
+          </button>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {documents.map((doc, index) => (
+            <div key={index} className="border border-secondary/30 rounded-md p-4 flex flex-col items-center bg-white">
+              <div className="flex items-center gap-2 mb-2 w-full">
+                {doc.type === 'pdf' ? (
+                  <File className="w-5 h-5 text-red-500" />
+                ) : (
+                  <ImageIcon className="w-5 h-5 text-green-600" />
+                )}
+                <span className="font-medium text-sm truncate">{doc.file}</span>
+                <a href={pbclient.getFileUrl(doc, doc.file)} target="_blank" rel="noreferrer">
+                  <FileDown className="w-4 h-4 ml-auto cursor-pointer" />
+                </a>
+              </div>
+              <div className="h-24 w-full bg-gray-100 flex items-center justify-center rounded">
+                {doc.type === 'pdf' ? (
+                  <FileText className="w-10 h-10 text-gray-400" />
+                ) : (
+                  <FileImage className="w-10 h-10 text-gray-400" />
+                )}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
   );
 }
-

@@ -1,10 +1,13 @@
+'use client';
 import React from 'react';
 import { DataTable } from '@/components/ui/Table';
 import { Eye, Download, Pencil, TrashIcon } from 'lucide-react';
 import { jobOrders } from '@/constants/cfs/job-order';
 import CreateForm from './Form';
+import { useRouter } from 'next/navigation';
 
 const Table = () => {
+  const router = useRouter();
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -83,7 +86,7 @@ const Table = () => {
           <Eye
             size={18}
             className="cursor-pointer text-primary"
-            onClick={() => console.log('View details for', row.original.id)}
+            onClick={() => router.push(`/client/cfs/services/job-order/view/${row.original.id}`)}
           />
           <Pencil
             size={18}
